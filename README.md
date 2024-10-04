@@ -23,6 +23,8 @@
 
 此时会打开一个浏览器页面，输入网址[https://buaa.yuketang.cn/pro/portal/home/](https://buaa.yuketang.cn/pro/portal/home/)，登录自己的学习账号，调整到下面的界面
 
+![pic1](pic1.png)
+
 此时，运行one_click.py，即可自动播放所有课程
 
  
