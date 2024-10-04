@@ -5,10 +5,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 from bs4 import BeautifulSoup
+import re
 
-# 指定 chrome.exe 的路径
-chrome_driver = "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
-driver_service = Service(chrome_driver)
 # 获取已打开的浏览器实例（以 Chrome 为例）
 options = webdriver.ChromeOptions()
 options.debugger_address = "127.0.0.1:9222"  # 根据实际情况调整端口
@@ -18,9 +16,16 @@ driver = webdriver.Chrome(options=options)
 def open_link_and_check_video(link):
     # 打开链接
     driver.get(link)
+    time.sleep(5)
     # 等待视频加载完成
-    time.sleep(10)
     try:
+        complete_element = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, 'span[data-v-7a22ffd8].text')))
+        complete = complete_element.text
+        if '100' in complete:
+            print("视频之前已经播放完成，准备跳转到下一个链接。")
+            return False
+        
         video_element = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.TAG_NAME, "video"))
         )
@@ -52,6 +57,9 @@ links = [ '52731971', '52731977', '52731988','52731997','52732008', '52732015', 
 
 
 for link in links:
+    # num1 = int(link)
+    # num2 = 52732118
+    # if num1 >= num2:
     url_link = head_link + link
     result = open_link_and_check_video(url_link)
 
